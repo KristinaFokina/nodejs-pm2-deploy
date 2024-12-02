@@ -1,10 +1,11 @@
 import "dotenv/config";
 
 import express from "express";
+import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import { errors } from "celebrate";
-import cors from "cors";
+// import cors from 'cors';
 import errorHandler from "./middlewares/error-handler";
 import { DB_ADDRESS } from "./config";
 import routes from "./routes";
@@ -12,26 +13,20 @@ import routes from "./routes";
 const { PORT = 3000 } = process.env;
 const app = express();
 mongoose.connect(DB_ADDRESS);
-// Настройка CORS
-const corsOptions = {
-  origin: "http://nodejs.fokina.nomorepartiesco.ru/signin",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-};
 
-app.use(cors(corsOptions));
 // Только для локальных тестов. Не используйте это в продакшене
-// app.use(cors());
+// app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.get("/crash-test", () => {
-  setTimeout(() => {
-    throw new Error("Сервер сейчас упадёт");
-  }, 0);
-});
-
+app.use(
+  cors({
+    origin: [
+      "https://nodejs.fokina.nomorepartiesco.ru",
+      "https://api.nodejs.fokina.nomorepartiesco.ru",
+    ],
+  })
+);
 app.use(routes);
 app.use(errors());
 app.use(errorHandler);
