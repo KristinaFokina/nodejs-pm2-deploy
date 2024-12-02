@@ -1,0 +1,25 @@
+{
+  "apps": [
+    {
+      "name": "backend",
+      "script": "npm",
+      "args": "start",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "env_production": {
+        "PATH": "./.env.deploy"
+      }
+    }
+  ],
+  "deploy": {
+    "production": {
+      "user": "username",
+      "host": "server_address",
+      "repo": "git_repository",
+      "path": "/path/to/deploy/directory",
+      "post-deploy": "npm install && pm2 reload ecosystem.config.json && scp .env username@server_address:/path/to/deploy/directory/.env"
+    }
+  }
+}
+
