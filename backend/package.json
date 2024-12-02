@@ -2,7 +2,8 @@
   "name": "web_canonicals_ru",
   "version": "1.0.0",
   "description": "Yandex.Praktikum canonical projects",
-  "main": "app.js",
+  "main": "src/app.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "start": "ts-node src/app.ts",
